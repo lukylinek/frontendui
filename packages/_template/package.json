@@ -1,6 +1,6 @@
 {
-    "name": "@hrbolek/uoisfrontend-template",
-    "version": "0.6.3",
+    "name": "@lukylinek/uoisfrontend-template",
+    "version": "0.0.1",
     "private": false,
     "publishConfig": {
         "access": "public"

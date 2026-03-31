@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       workspace_name:
-        description: "Název npm workspace (např. @hrbolek/app_ug2)"
+        description: "Kumpan_Rajdl_Projekt"
         required: true
         type: string
 
