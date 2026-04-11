@@ -46,7 +46,7 @@ export const ProjectGQLModelRouterSegments = [
         element: (<PageVector />),
     },
     {
-        path: ReadItemURI,
+        path: "/projekt_lukas/template/view/:id",
         element: (<PageReadItem />),
     },
     {

@@ -30,8 +30,8 @@ const Routes = [
         path: "/",          // root
         element: <AppLayout />,
         children: [
-            ...ProjectGQLModelRouterSegments,
             ...BaseRouterSegments,
+            ...ProjectGQLModelRouterSegments,
             // ...GroupRouterSegments,
             // ...RoleTypeRouterSegments,
             // ...UserRouterSegments,

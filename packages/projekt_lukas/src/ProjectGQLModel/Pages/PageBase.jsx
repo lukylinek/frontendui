@@ -30,7 +30,7 @@ import { LargeCard } from "../Components"
 export const PageItemBase = ({ 
     queryAsyncAction=ReadAsyncAction,
     PageNavbar=()=>null,
-    ItemLayout=LargeCard,
+    ItemLayout = ({ children }) => <div style={{ padding: "20px" }}>{children}</div>,
     SubPage=null,
     ...props
 }) => {
