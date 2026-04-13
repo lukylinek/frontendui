@@ -71,3 +71,7 @@
 - funkční detail projektu
 - správně nastavený routing
 - odstraněny runtime chyby
+
+
+### 13.04.2026 – 
+-- UI zobrazení entity dokončeno
