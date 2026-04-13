@@ -16,7 +16,7 @@ fragment Link on ProjectGQLModel {
   
 }
 `
-
+ 
 const MediumFragmentStr = `
 fragment Medium on ProjectGQLModel {
   ...Link
