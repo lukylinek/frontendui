@@ -1,7 +1,7 @@
 import { PageItemBase } from "./PageBase"
 import { ProjectReadContent } from "./ProjectReadContent"
 
-export const PageReadItem = ({ 
+export const PageReadItem = ({
     SubPage = ProjectReadContent,
     ...props
 }) => {

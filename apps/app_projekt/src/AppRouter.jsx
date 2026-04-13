@@ -3,47 +3,32 @@ import {
     Outlet,
     RouterProvider,
 } from "react-router-dom";
-import { NavigationHistoryLinks, NavigationHistoryProvider } from '../../../packages/_template/src/Base/Helpers/NavigationHistoryProvider';
 
-import { BaseRouterSegments } from "../../../packages/_template/src/Base/Pages/RouterSegment";
+import {
+    NavigationHistoryLinks,
+    NavigationHistoryProvider
+} from '../../../packages/_template/src/Base/Helpers/NavigationHistoryProvider';
 
-// import { GroupRouterSegments } from "../../../packages/_template/src/GroupGQLModel/Pages/RouterSegment";
-// import { RoleTypeRouterSegments } from "../../../packages/_template/src/RoleTypeGQLModel/Pages";
-// import { UserRouterSegments } from "../../../packages/_template/src/UserGQLModel/Pages/RouterSegment";
-// import { GroupTypeRouterSegments } from "../../../packages/_template/src/GroupTypeGQLModel/Pages/RouterSegment";
-// import { RoleRouterSegments } from "../../../packages/_template/src/RoleGQLModel/Pages";
-// import { Page } from "../../../packages/_template/src/Base/Pages/Page";
 import { AppNavbar } from "./AppNavbar";
 import { ProjectGQLModelRouterSegments } from "../../../packages/projekt_lukas/src/ProjectGQLModel/Pages/RouterSegment";
-
 
 const AppLayout = () => (
     <NavigationHistoryProvider>
         <AppNavbar />
-        <NavigationHistoryLinks />
+        {/* <NavigationHistoryLinks /> */}
         <Outlet />
     </NavigationHistoryProvider>
 );
 
 const Routes = [
     {
-        path: "/",          // root
+        path: "/",
         element: <AppLayout />,
         children: [
-            ...BaseRouterSegments,
             ...ProjectGQLModelRouterSegments,
-            // ...GroupRouterSegments,
-            // ...RoleTypeRouterSegments,
-            // ...UserRouterSegments,
-            // ...GroupTypeRouterSegments,
-            // ...RoleRouterSegments,
-            
         ],
     },
 ];
-
-// console.log("Routes", Routes)
-// console.log("Routes", GroupRouterSegments)
 
 const router = createBrowserRouter(Routes);
 
