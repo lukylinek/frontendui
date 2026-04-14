@@ -1,8 +1,8 @@
 import { PageItemBase } from "./PageBase"
-import { ProjectReadContent } from "./ProjectReadContent"
+import { GeneratedContentBase } from "../../../../_template/src/Base/Pages/Page"
 
 export const PageReadItem = ({
-    SubPage = ProjectReadContent,
+    SubPage = GeneratedContentBase,
     ...props
 }) => {
     return (

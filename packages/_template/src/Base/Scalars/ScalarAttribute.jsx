@@ -1,5 +1,6 @@
 import { CardCapsule } from "../Components/CardCapsule"
 import { MediumCard } from "../Components/MediumCard"
+import { useMemo } from "react"
 import { Col } from "../Components/Col"
 import { Row } from "../Components/Row"
 import { Link } from "../Components"
@@ -32,18 +33,37 @@ export const ScalarAttribute = ({ attribute_name, item }) => {
 }
 
 export const MediumCardScalars = ({ item }) => {
+    const sureitem = item || {}
+
+    const scalars = useMemo(
+        () =>
+            Object.fromEntries(
+                Object.entries(sureitem).filter(([_, v]) => {
+                    return (
+                        v != null &&
+                        (
+                            typeof v === "string" ||
+                            typeof v === "number" ||
+                            typeof v === "boolean"
+                        )
+                    )
+                })
+            ),
+        [sureitem]
+    )
+
     return (
-        <CardCapsule item={item} header={"Skalární atributy"}>
-            {Object.entries(item).map(([attribute_name, attribute_value]) => {
-                if (Array.isArray(attribute_value)) return null
-                if (typeof attribute_value === "object" && attribute_value !== null) {
-                    return <ScalarAttribute key={attribute_name} item={item} attribute_name={attribute_name} />
-                }
-                else {
-                    return null
-                }
-            }
-            )}
+        <CardCapsule item={sureitem}>
+            {Object.entries(scalars).map(([attribute_name, value]) => (
+                <Row key={attribute_name}>
+                    <Col className="col-2">
+                        <b>{attribute_name}</b>
+                    </Col>
+                    <Col className="col-10">
+                        <span>{String(value)}</span>
+                    </Col>
+                </Row>
+            ))}
         </CardCapsule>
     )
 }

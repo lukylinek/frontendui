@@ -42,11 +42,19 @@ export const VectorAttribute = ({ attribute_name, item }) => {
 
 
 export const MediumCardVectors = ({ item }) => {
+    const sureitem = item || {}
+
     return (
-        <CardCapsule item={item}>
-            {Object.entries(item).map(([attribute_name, attribute_value]) => {
+        <CardCapsule item={sureitem}>
+            {Object.entries(sureitem).map(([attribute_name, attribute_value]) => {
                 if (Array.isArray(attribute_value)) {
-                    return <VectorAttribute key={attribute_name} attribute_name={attribute_name} item={item} />
+                    return (
+                        <VectorAttribute
+                            key={attribute_name}
+                            attribute_name={attribute_name}
+                            item={sureitem}
+                        />
+                    )
                 } else {
                     return null
                 }
