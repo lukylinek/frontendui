@@ -1,366 +1,219 @@
-import { useMemo } from "react"
 import { useGQLEntityContext } from "../../../../_template/src/Base/Helpers/GQLEntityProvider"
-import { LargeCard } from "../Components"
+import { UpdateItemURI } from "../Components"
 
 const formatDate = (value) => {
-    if (!value) return ""
+    if (!value) return "-"
     try {
-        return new Date(value).toLocaleString("cs-CZ")
+        return new Date(value).toLocaleDateString("cs-CZ")
     } catch {
         return String(value)
     }
 }
 
-const isScalar = (value) => {
-    return (
-        value == null ||
-        typeof value === "string" ||
-        typeof value === "number" ||
-        typeof value === "boolean"
-    )
+const getEditURI = (item) => {
+    if (!item?.id) return "#"
+    return UpdateItemURI.replace(":id", item.id)
 }
 
-const isArray = (value) => Array.isArray(value)
-
-const isObject = (value) => {
-    return value !== null && typeof value === "object" && !Array.isArray(value)
-}
-
-const safeScalarValue = (key, value) => {
-    if (value == null) return ""
-    if (typeof value === "boolean") return value ? "Ano" : "Ne"
-
-    const lowered = String(key).toLowerCase()
-    if (
-        lowered.includes("date") ||
-        lowered.includes("created") ||
-        lowered.includes("lastchange") ||
-        lowered.includes("updated")
-    ) {
-        return formatDate(value)
-    }
-
-    return String(value)
-}
-
-const Section = ({ title, children }) => (
-    <div
-        style={{
-            marginBottom: "1.5rem",
-            padding: "1rem 1.25rem",
-            border: "1px solid #d9d9d9",
-            borderRadius: "10px",
-            background: "white",
-        }}
-    >
-        <h2
-            style={{
-                marginTop: 0,
-                marginBottom: "1rem",
-                fontSize: "1.8rem",
-                fontWeight: 700,
-            }}
-        >
-            {title}
-        </h2>
-        {children}
+const DetailRow = ({ label, value }) => (
+    <div style={{ marginBottom: "0.85rem" }}>
+        <div style={{ fontSize: "0.78rem", color: "#6c757d", fontWeight: 700, textTransform: "uppercase" }}>
+            {label}
+        </div>
+        <div style={{ fontSize: "0.95rem", wordBreak: "break-word" }}>
+            {value || "-"}
+        </div>
     </div>
 )
 
-const Row = ({ label, value }) => {
-    if (value === "") return null
-
-    return (
-        <div
-            style={{
-                display: "grid",
-                gridTemplateColumns: "220px 1fr",
-                gap: "0.75rem",
-                padding: "0.45rem 0",
-                borderBottom: "1px solid #f0f0f0",
-            }}
-        >
-            <div style={{ fontWeight: 700, wordBreak: "break-word" }}>{label}</div>
-            <div style={{ wordBreak: "break-word" }}>{value}</div>
+const Card = ({ title, children }) => (
+    <div
+        style={{
+            border: "1px solid #d8dee4",
+            borderRadius: "10px",
+            background: "#fff",
+            marginBottom: "1rem",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+        }}
+    >
+        {title && (
+            <div
+                style={{
+                    padding: "0.85rem 1rem",
+                    borderBottom: "1px solid #e9ecef",
+                    fontWeight: 800,
+                    color: "#495057",
+                    textTransform: "uppercase",
+                    fontSize: "0.9rem",
+                }}
+            >
+                {title}
+            </div>
+        )}
+        <div style={{ padding: "1rem" }}>
+            {children}
         </div>
-    )
-}
-
-const ArrayItemCard = ({ item, index }) => {
-    if (isScalar(item)) {
-        return (
-            <div
-                style={{
-                    padding: "0.9rem",
-                    border: "1px solid #e5e5e5",
-                    borderRadius: "8px",
-                    marginBottom: "0.75rem",
-                    background: "white",
-                }}
-            >
-                {String(item)}
-            </div>
-        )
-    }
-
-    if (isObject(item)) {
-        const entries = Object.entries(item).filter(([, value]) => isScalar(value))
-
-        return (
-            <div
-                style={{
-                    padding: "0.9rem",
-                    border: "1px solid #e5e5e5",
-                    borderRadius: "8px",
-                    marginBottom: "0.75rem",
-                    background: "white",
-                }}
-            >
-                <div style={{ fontWeight: 700, marginBottom: "0.6rem" }}>
-                    Položka {index + 1}
-                </div>
-
-                {entries.length === 0 ? (
-                    <div>Objekt nemá přímo zobrazitelné skalární hodnoty.</div>
-                ) : (
-                    entries.map(([key, value]) => (
-                        <Row
-                            key={key}
-                            label={key}
-                            value={safeScalarValue(key, value)}
-                        />
-                    ))
-                )}
-            </div>
-        )
-    }
-
-    return null
-}
-
-const TreeNode = ({ label, value, level = 0 }) => {
-    const marginLeft = `${level * 18}px`
-
-    if (isScalar(value)) {
-        const rendered = safeScalarValue(label, value)
-        if (rendered === "") return null
-
-        return (
-            <div style={{ marginLeft, marginBottom: "0.4rem" }}>
-                <span style={{ fontWeight: 700 }}>{label}:</span> {rendered}
-            </div>
-        )
-    }
-
-    if (isArray(value)) {
-        return (
-            <div style={{ marginLeft, marginBottom: "0.75rem" }}>
-                <div style={{ fontWeight: 700, marginBottom: "0.35rem" }}>
-                    {label} [{value.length}]
-                </div>
-
-                {value.length === 0 ? (
-                    <div style={{ marginLeft: "1rem" }}>Prázdné pole</div>
-                ) : (
-                    value.map((item, index) => (
-                        <div
-                            key={item?.id ?? `${label}-${index}`}
-                            style={{
-                                marginLeft: "1rem",
-                                paddingLeft: "0.75rem",
-                                borderLeft: "2px solid #e6e6e6",
-                                marginBottom: "0.5rem",
-                            }}
-                        >
-                            <TreeNode
-                                label={`${label}[${index}]`}
-                                value={item}
-                                level={0}
-                            />
-                        </div>
-                    ))
-                )}
-            </div>
-        )
-    }
-
-    if (isObject(value)) {
-        const entries = Object.entries(value)
-
-        return (
-            <div style={{ marginLeft, marginBottom: "0.75rem" }}>
-                <div style={{ fontWeight: 700, marginBottom: "0.35rem" }}>{label}</div>
-                <div
-                    style={{
-                        marginLeft: "1rem",
-                        paddingLeft: "0.75rem",
-                        borderLeft: "2px solid #e6e6e6",
-                    }}
-                >
-                    {entries.length === 0 ? (
-                        <div>Prázdný objekt</div>
-                    ) : (
-                        entries.map(([childKey, childValue]) => (
-                            <TreeNode
-                                key={`${label}-${childKey}`}
-                                label={childKey}
-                                value={childValue}
-                                level={0}
-                            />
-                        ))
-                    )}
-                </div>
-            </div>
-        )
-    }
-
-    return null
-}
+    </div>
+)
 
 export const ProjectReadContent = () => {
     const { item } = useGQLEntityContext()
 
-    const { scalarEntries, vectorEntries, objectEntries } = useMemo(() => {
-        if (!item || typeof item !== "object") {
-            return {
-                scalarEntries: [],
-                vectorEntries: [],
-                objectEntries: [],
-            }
-        }
+    if (!item) {
+        return (
+            <div style={{ padding: "1.5rem" }}>
+                Projekt nebyl nalezen.
+            </div>
+        )
+    }
 
-        const entries = Object.entries(item)
-
-        return {
-            scalarEntries: entries.filter(([, value]) => isScalar(value)),
-            vectorEntries: entries.filter(([, value]) => isArray(value)),
-            objectEntries: entries.filter(([, value]) => isObject(value)),
-        }
-    }, [item])
-
-    if (!item) return <div>Project nebyl nalezen.</div>
+    const subprojects = item.subprojects ?? []
 
     return (
-        <LargeCard item={item}>
+        <div style={{ padding: "1.25rem", background: "#f6f8fa", minHeight: "100vh" }}>
             <div
                 style={{
-                    padding: "1.5rem",
-                    maxWidth: "1100px",
+                    display: "grid",
+                    gridTemplateColumns: "340px 1fr",
+                    gap: "1.25rem",
+                    alignItems: "start",
                 }}
             >
-                <h1
-                    style={{
-                        marginTop: 0,
-                        marginBottom: "1.5rem",
-                        fontSize: "2.2rem",
-                        fontWeight: 700,
-                    }}
-                >
-                    Detail projektu
-                </h1>
+                <div>
+                    <Card title="Detail">
+                        <h2 style={{ marginTop: 0, marginBottom: "0.35rem", fontSize: "1.35rem" }}>
+                            {item.name ?? "Bez názvu"}
+                        </h2>
 
-                <Section title={`TREE ${item.id ?? ""}`}>
-                    <div style={{ marginBottom: "0.75rem" }}>
+                        <div style={{ color: "#6c757d", marginBottom: "1.2rem" }}>
+                            ProjectGQLModel
+                        </div>
+
+                        <DetailRow label="ID" value={item.id} />
+                        <DetailRow label="Název" value={item.name} />
+                        <DetailRow label="Anglický název" value={item.nameEn} />
+                        <DetailRow label="Začátek" value={formatDate(item.startdate)} />
+                        <DetailRow label="Konec" value={formatDate(item.enddate)} />
+                        <DetailRow label="Typ projektu" value={item.type?.name ?? item.projectTypeId} />
+                        <DetailRow label="Finance" value={item.finance?.name ?? item.financeId} />
+                        <DetailRow label="Lastchange" value={item.lastchange} />
+                    </Card>
+
+                    <Card title="Nástroje">
                         <a
-                            href="#tree-root"
-                            onClick={(e) => {
-                                e.preventDefault()
-                                const el = document.getElementById("tree-root")
-                                if (el) el.scrollIntoView({ behavior: "smooth" })
+                            href={getEditURI(item)}
+                            style={{
+                                display: "block",
+                                padding: "0.55rem 0.8rem",
+                                border: "1px solid #0d6efd",
+                                borderRadius: "6px",
+                                color: "#0d6efd",
+                                textDecoration: "none",
+                                textAlign: "center",
+                                fontWeight: 700,
+                                marginBottom: "0.6rem",
                             }}
                         >
-                            Open
+                            Upravit projekt
                         </a>
-                    </div>
 
-                    <div id="tree-root">
-                        <TreeNode label={item.__typename ?? "ProjectGQLModel"} value={item} />
-                    </div>
-                </Section>
+                        <a
+                            href="/projekt/project/list"
+                            style={{
+                                display: "block",
+                                padding: "0.55rem 0.8rem",
+                                border: "1px solid #6c757d",
+                                borderRadius: "6px",
+                                color: "#495057",
+                                textDecoration: "none",
+                                textAlign: "center",
+                                fontWeight: 700,
+                            }}
+                        >
+                            Zpět na seznam
+                        </a>
+                    </Card>
+                </div>
 
-                <Section title="SKALÁRNÍ ATRIBUTY">
-                    {scalarEntries.length === 0 ? (
-                        <div>Žádné skalární atributy.</div>
-                    ) : (
-                        scalarEntries.map(([key, value]) => (
-                            <Row
-                                key={key}
-                                label={key}
-                                value={safeScalarValue(key, value)}
-                            />
-                        ))
-                    )}
-                </Section>
+                <div>
+                    <Card title="Informace o projektu">
+                        <div
+                            style={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr",
+                                gap: "1rem",
+                            }}
+                        >
+                            <DetailRow label="Název" value={item.name} />
+                            <DetailRow label="Anglický název" value={item.nameEn} />
+                            <DetailRow label="Start date" value={formatDate(item.startdate)} />
+                            <DetailRow label="End date" value={formatDate(item.enddate)} />
+                            <DetailRow label="Dokončeno" value={item.done === true ? "Ano" : item.done === false ? "Ne" : "-"} />
+                            <DetailRow label="Master project" value={item.masterproject?.name ?? item.masterprojectId} />
+                        </div>
 
-                <Section title="VEKTOROVÉ ATRIBUTY">
-                    {vectorEntries.length === 0 ? (
-                        <div>Žádné vektorové atributy.</div>
-                    ) : (
-                        vectorEntries.map(([key, value]) => (
-                            <div key={key} style={{ marginBottom: "1.25rem" }}>
-                                <div
-                                    style={{
-                                        fontWeight: 700,
-                                        fontSize: "1.1rem",
-                                        marginBottom: "0.75rem",
-                                    }}
-                                >
-                                    {key} [{value.length}]
-                                </div>
-
-                                {value.length === 0 ? (
-                                    <div>Prázdné pole.</div>
-                                ) : (
-                                    value.map((arrayItem, index) => (
-                                        <ArrayItemCard
-                                            key={arrayItem?.id ?? `${key}-${index}`}
-                                            item={arrayItem}
-                                            index={index}
-                                        />
-                                    ))
-                                )}
+                        {item.description && (
+                            <div style={{ marginTop: "1rem" }}>
+                                <DetailRow label="Popis" value={item.description} />
                             </div>
-                        ))
-                    )}
-                </Section>
+                        )}
+                    </Card>
 
-                {objectEntries.length > 0 && (
-                    <Section title="OBJEKTOVÉ ATRIBUTY">
-                        {objectEntries.map(([key, value]) => (
-                            <div key={key} style={{ marginBottom: "1.25rem" }}>
-                                <div
+                    <Card title={`Podprojekty (${subprojects.length})`}>
+                        {subprojects.length === 0 ? (
+                            <div style={{ color: "#6c757d" }}>
+                                Tento projekt nemá žádné podprojekty.
+                            </div>
+                        ) : (
+                            <div style={{ overflowX: "auto" }}>
+                                <table
                                     style={{
-                                        fontWeight: 700,
-                                        fontSize: "1.1rem",
-                                        marginBottom: "0.75rem",
+                                        width: "100%",
+                                        borderCollapse: "collapse",
+                                        fontSize: "0.95rem",
                                     }}
                                 >
-                                    {key}
-                                </div>
-
-                                <div
-                                    style={{
-                                        padding: "0.9rem",
-                                        border: "1px solid #e5e5e5",
-                                        borderRadius: "8px",
-                                        background: "white",
-                                    }}
-                                >
-                                    {Object.entries(value)
-                                        .filter(([, nestedValue]) => isScalar(nestedValue))
-                                        .map(([nestedKey, nestedValue]) => (
-                                            <Row
-                                                key={nestedKey}
-                                                label={nestedKey}
-                                                value={safeScalarValue(nestedKey, nestedValue)}
-                                            />
+                                    <thead>
+                                        <tr style={{ borderBottom: "2px solid #dee2e6" }}>
+                                            <th style={{ textAlign: "left", padding: "0.65rem" }}>Název</th>
+                                            <th style={{ textAlign: "left", padding: "0.65rem" }}>Anglický název</th>
+                                            <th style={{ textAlign: "left", padding: "0.65rem" }}>Začátek</th>
+                                            <th style={{ textAlign: "left", padding: "0.65rem" }}>Konec</th>
+                                            <th style={{ textAlign: "left", padding: "0.65rem" }}>Dokončeno</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {subprojects.map((project) => (
+                                            <tr
+                                                key={project.id}
+                                                style={{ borderBottom: "1px solid #e9ecef" }}
+                                            >
+                                                <td style={{ padding: "0.65rem" }}>
+                                                    <a href={`/projekt/project/view/${project.id}`}>
+                                                        {project.name ?? "-"}
+                                                    </a>
+                                                </td>
+                                                <td style={{ padding: "0.65rem" }}>
+                                                    {project.nameEn ?? "-"}
+                                                </td>
+                                                <td style={{ padding: "0.65rem" }}>
+                                                    {formatDate(project.startdate)}
+                                                </td>
+                                                <td style={{ padding: "0.65rem" }}>
+                                                    {formatDate(project.enddate)}
+                                                </td>
+                                                <td style={{ padding: "0.65rem" }}>
+                                                    {project.done === true ? "Ano" : project.done === false ? "Ne" : "-"}
+                                                </td>
+                                            </tr>
                                         ))}
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
-                        ))}
-                    </Section>
-                )}
+                        )}
+                    </Card>
+                </div>
             </div>
-        </LargeCard>
+        </div>
     )
 }

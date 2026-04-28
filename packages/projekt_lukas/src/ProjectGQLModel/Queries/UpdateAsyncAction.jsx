@@ -4,25 +4,30 @@ import { createAsyncGraphQLAction2 } from "../../../../dynamic/src/Core/createAs
 import { reduceToFirstEntity, updateItemsFromGraphQLResult } from "../../../../dynamic/src/Store";
 
 const UpdateMutationStr = `
-mutation roleTypeUpdate(
-	$id: UUID! # null, 
-	$lastchange: DateTime! # null, 
-	$name: String # null, 
-	$nameEn: String # null
+mutation projectUpdate(
+    $id: UUID!
+    $lastchange: DateTime!
+    $name: String
+    $nameEn: String
 ) {
-  roleTypeUpdate(
-	roleType: {
-	id: $id, 
-	lastchange: $lastchange, 
-	name: $name, 
-	nameEn: $nameEn}
+  projectUpdate(
+    project: {
+      id: $id
+      lastchange: $lastchange
+      name: $name
+      nameEn: $nameEn
+    }
   ) {
-    ... on RoleTypeGQLModel { ...Large }
-    ... on RoleTypeGQLModelUpdateError { ...Error }
+    ... on ProjectGQLModel {
+      ...Large
+    }
+    ... on ProjectGQLModelUpdateError {
+      ...Error
+    }
   }
 }
 
-fragment Error on RoleTypeGQLModelUpdateError {
+fragment Error on ProjectGQLModelUpdateError {
   __typename
   Entity {
     ...Large
@@ -33,8 +38,12 @@ fragment Error on RoleTypeGQLModelUpdateError {
   location
   input
 }
-`
+`;
 
-const UpdateMutation = createQueryStrLazy(`${UpdateMutationStr}`, LargeFragment)
-export const UpdateAsyncAction = createAsyncGraphQLAction2(UpdateMutation, 
-    updateItemsFromGraphQLResult, reduceToFirstEntity)
+const UpdateMutation = createQueryStrLazy(`${UpdateMutationStr}`, LargeFragment);
+
+export const UpdateAsyncAction = createAsyncGraphQLAction2(
+  UpdateMutation,
+  updateItemsFromGraphQLResult,
+  reduceToFirstEntity
+);
