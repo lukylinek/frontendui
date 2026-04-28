@@ -52,3 +52,4 @@ export const Link = ({ item, LinkURI: LinkURI_ = LinkURI, action="view", childre
 }
 
 registerLink('StudentGQLModel', Link)
+// registerLink('UserGQLModel', ({...props}) => <Link {...props} LinkURI={"/generic/UserGQLModel/view/"} />, "/generic/UserGQLModel/view/")

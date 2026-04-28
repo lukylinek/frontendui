@@ -6,6 +6,7 @@ import { PageDeleteItem } from "./PageDeleteItem"
 
 import { MembershipsURI, PageReadItemMemberships, PageReadItemRoles, PageReadItemRolesOn, PageReadItemSubgroups, RolesOnURI, RolesURI, SubgroupsURI } from './PageReadItemEx'
 import { CreateURI, DeleteItemURI, DeleteURI, ListURI, ReadItemURI, UpdateItemURI, UpdateURI } from "../Components"
+import { PageVectorBase, ReadItemUniverisityURI } from "./PageVectorBase"
 
 /**
  * Definice segmentů rout pro Template stránky.
@@ -82,4 +83,8 @@ export const GroupRouterSegments = [
         element: (<PageReadItem />),
     },
 
+    {
+        path: ReadItemUniverisityURI,
+        element: (<PageVectorBase />)
+    },
 ]

@@ -2,7 +2,7 @@ import { ProxyLink } from "@hrbolek/uoisfrontend-shared"
 import { URIRoot } from "../../uriroot";
 import { registerLink } from "../../../../_template/src/Base/Components/Link";
 
-const modelURI = `${URIRoot}/user`
+const modelURI = `${URIRoot}/UserGQLModel`
 export const ListURI = `${modelURI}/list/`;
 export const CreateURI = `${modelURI}/create/`;
 export const ReadURI = `${modelURI}/view/`;

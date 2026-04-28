@@ -16,7 +16,7 @@ export const UserMembershipsCard = ({ item, children }) => {
 }
 
 export const Memberships = ({ memberships }) => {
-    const groups = memberships.map(m => m?.group || {})
+    const groups = memberships?.map(m => m?.group || {}) || []
     const katedry = groups?.filter(g => g?.grouptype?.name === "katedra") || []
     const fakulty = groups?.filter(g => g?.grouptype?.name === "fakulta") || []
     const univerzity = groups?.filter(g => g?.grouptype?.name === "univerzita") || []

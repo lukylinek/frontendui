@@ -10,7 +10,15 @@ export const CatchRouterSegments = [
         element: <PageVector />
     },
     {
-        path: `*`,
+        path: `/:app/:typename/:action/:id`,
+        element: (<Page />),
+    },
+    {
+        path: `/:app/:typename/:action/`,
         element: (<PageCatch />),
-    },    
+    },
+    // {
+    //     path: `*`,
+    //     element: (<PageCatch />),
+    // },    
 ]

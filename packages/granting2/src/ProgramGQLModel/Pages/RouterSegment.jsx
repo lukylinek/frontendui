@@ -6,6 +6,7 @@ import { PageDeleteItem } from "./PageDeleteItem"
 
 import { DeleteItemURI, UpdateItemURI } from "../Components"
 import { CreateURI, ReadItemURI, VectorItemsURI } from "../Components"
+import { PageRandom, RandomURI } from "./PageRandom"
 
 /**
  * Definice segmentů rout pro Template stránky.
@@ -68,5 +69,9 @@ export const ProgramGQLModelRouterSegments = [
     {
         path: ReadItemURI.replace("view", ":any"),
         element: (<PageReadItem />),
-    }    
+    },
+    {
+        path: RandomURI,
+        element: <PageRandom />
+    }
 ]

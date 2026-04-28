@@ -13,6 +13,7 @@ import { UserRouterSegments } from "../../../packages/_template/src/UserGQLModel
 import { GroupTypeRouterSegments } from "../../../packages/_template/src/GroupTypeGQLModel/Pages/RouterSegment";
 import { RoleRouterSegments } from "../../../packages/_template/src/RoleGQLModel/Pages";
 import { AppNavbar } from "./AppNavbar";
+import { CatchRouterSegments } from "../../../packages/granting2/src/_PageCatch/PageCatch";
 
 
 const AppLayout = () => (
@@ -30,6 +31,7 @@ const ChildRoutes = [
     ...UserRouterSegments,
     ...GroupTypeRouterSegments,
     ...RoleRouterSegments,
+    ...CatchRouterSegments
 ]
 
 const Routes = [

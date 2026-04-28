@@ -18,7 +18,8 @@ fragment Link on ProgramGQLModel  {
   typeId
 
 
-  
+  createdby { __typename id fullname }
+  changedby { __typename id fullname }
 }
 `
 
@@ -72,6 +73,11 @@ fragment Medium on ProgramGQLModel  {
         nameEn
         description
         descriptionEn
+        semesters {
+            __typename
+            id
+            order
+        }
     }
 
     students {

@@ -119,23 +119,24 @@ export const MyNavDropdown = ({ item }) => {
             <NavDropdown.Item as={ProxyLink} to={VectorItemsURI}>
                 Seznam všech osob
             </NavDropdown.Item>
-            
-                <NavDropdown.Item as={Link} item={item} action="memberships" disabled={!hasProperType}>
-                    Členství<br/><Link item={item} />
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} item={item} action="roles" disabled={!hasProperType}>
-                    Role<br/><Link item={item} />
-                </NavDropdown.Item>
+
+            <NavDropdown.Divider />
+
+            <NavDropdown.Item as={Link} item={item} action="memberships" disabled={!hasProperType}>
+                Členství {hasProperType&& <>({item?.fullname})</>}
+            </NavDropdown.Item>
+            <NavDropdown.Item as={Link} item={item} action="roles" disabled={!hasProperType}>
+                Role {hasProperType&& <>({item?.fullname})</>}
+            </NavDropdown.Item>
             
             
             <NavDropdown.Divider />
-            
                 <NavDropdown.Item 
                     as={UpdateLink} 
                     item={item} 
                     disabled={!hasProperType}
                 >
-                    Upravit<br/><Link item={item} />
+                    Upravit {hasProperType&& <>({item?.fullname})</>}
                 </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={ProxyLink} to={`/generic/${item?.__typename}/__def/${item?.id}`} reloadDocument={false}>Definice</NavDropdown.Item >

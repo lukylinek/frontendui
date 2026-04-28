@@ -4,25 +4,14 @@ import { createAsyncGraphQLAction2 } from "../../../../dynamic/src/Core/createAs
 import { reduceToFirstEntity, updateItemsFromGraphQLResult } from "../../../../dynamic/src/Store";
 
 const UpdateMutationStr = `
-mutation roleTypeUpdate(
-	$id: UUID! # null, 
-	$lastchange: DateTime! # null, 
-	$name: String # null, 
-	$nameEn: String # null
-) {
-  roleTypeUpdate(
-	roleType: {
-	id: $id, 
-	lastchange: $lastchange, 
-	name: $name, 
-	nameEn: $nameEn}
-  ) {
-    ... on RoleTypeGQLModel { ...Large }
-    ... on RoleTypeGQLModelUpdateError { ...Error }
+mutation programUpdate($id: UUID!, $lastchange: DateTime!, $name: String, $nameEn: String, $typeId: UUID) {
+  programUpdate(program: {id: $id, lastchange: $lastchange, name: $name, nameEn: $nameEn, typeId: $typeId}) {
+    ... on ProgramGQLModel  { ...Large }
+    ... on ProgramGQLModelUpdateError  { ...Error }
   }
 }
 
-fragment Error on RoleTypeGQLModelUpdateError {
+fragment Error on ProgramGQLModelUpdateError  {
   __typename
   Entity {
     ...Large

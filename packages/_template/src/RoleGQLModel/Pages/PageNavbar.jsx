@@ -5,7 +5,6 @@ import { LinkURI, VectorItemsURI } from '../Components'
 import { CreateLink } from '../Mutations/Create';
 import { UpdateLink } from '../Mutations/Update';
 import { NavDropdown } from 'react-bootstrap';
-import { AddRoleOnGroupButton } from '../Mutations/AddRoleonGroup';
 import { Link } from '../../../../_template/src/Base/Components';
 
 /**
@@ -125,36 +124,32 @@ export const MyNavDropdown = ({ item }) => {
             
             <NavDropdown.Divider />
             
-            <NavDropdown.Item 
+            {/* <NavDropdown.Item 
                 as={UpdateLink} 
                 item={item} 
                 disabled={!hasProperType}
             >
                 Upravit aktuální
-            </NavDropdown.Item>
-            <NavDropdown.Item 
+            </NavDropdown.Item> */}
+            {/* <NavDropdown.Item 
                 as={CreateLink} 
                 item={item} 
-                item={{
-                    name: "Nové oprávnění",
-                }}
                 disabled={!hasProperType}
             >
                 Nové oprávnění
-            </NavDropdown.Item>
+            </NavDropdown.Item> */}
             
-            <NavDropdown.Item 
+
+
+
+            {/* <NavDropdown.Item 
                 as={AddRoleOnGroupButton} 
                 item={item} 
                 rbacitem={item}
-                item={{
-                    group: item,
-                    groupId: item?.id,
-                }}
                 disabled={(item?.__typename !== "GroupGQLModel")}
             >
-                Nové oprávnění na <br/><Link item={item} />
-            </NavDropdown.Item>
+                Nové oprávnění {(item?.__typename === "GroupGQLModel")&& <>({item?.name})</>}
+            </NavDropdown.Item> */}
             
         </NavDropdown>
     )

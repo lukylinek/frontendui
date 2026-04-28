@@ -14,7 +14,7 @@ import { SimpleCardCapsuleRightCorner } from "@hrbolek/uoisfrontend-shared"
 import { CopyButton } from "../Components/CopyButton"
 import { Table } from "../Components/Table"
 
-export const GeneratedContentBase = ({ item }) => {
+const GeneratedContentBase = ({ item }) => {
     return (<>
         <Tree item={item} />
         <MediumCardScalars item={item} />
@@ -111,7 +111,7 @@ const PageItemInnerStructure = ({
  * @returns {import("react").JSX.Element}
  *   Provider s navigací (`PageNavbar`) a obsahem stránky (`children`).
  */
-export const PageItemBase = ({ 
+const PageItemBase = ({ 
     queryAsyncAction=ReadAsyncAction,
     PageNavbar=null,
     ItemLayout=LargeCard,

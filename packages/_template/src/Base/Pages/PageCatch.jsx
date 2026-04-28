@@ -18,7 +18,7 @@ import { ProxyLink } from "../Components/ProxyLink"
 import { GenericURIRoot } from "../Components"
 
 
-export const GeneratedContentBase = ({ item }) => {
+const GeneratedContentBase = ({ item }) => {
     return (<>
         <Tree item={item} />
         <MediumCardScalars item={item} />
@@ -115,7 +115,7 @@ const PageItemInnerStructure = ({
  * @returns {import("react").JSX.Element}
  *   Provider s navigací (`PageNavbar`) a obsahem stránky (`children`).
  */
-export const PageItemBase = ({ 
+const PageItemBase = ({ 
     queryAsyncAction=ReadAsyncAction,
     PageNavbar=null,
     ItemLayout=LargeCard,
@@ -137,7 +137,7 @@ export const PageItemBase = ({
 }
 
 
-export const PageVectorContent = ({queryById, queryVector, mutations, children, params}) => {
+const PageVectorContent = ({queryById, queryVector, mutations, children, params}) => {
      const gqlContext= useGQLEntityContext()
      const {id, typename, action="view"} = useParams()
      const { item, data } = gqlContext || {}

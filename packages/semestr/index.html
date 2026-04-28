@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>GQL Model Viewer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        // Node-like shim pro knihovny, které čekají process.env
+        globalThis.process = globalThis.process || { env: {} };
+        globalThis.process.env = globalThis.process.env || {};
+        globalThis.process.env.NODE_ENV = globalThis.process.env.NODE_ENV || "development" || "production";
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- <script src="https://unpkg.com/react@19"></script>
+  <script src="https://unpkg.com/react-dom@19"></script>   -->
+
+    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+
+    <script src="https://unpkg.com/@reduxjs/toolkit@1.9.3/dist/redux-toolkit.umd.js"></script>
+
+    <!-- Babel (modern verze) -->
+    <script src="https://unpkg.com/@babel/standalone@7.25.0/babel.min.js"></script>
+
+    <!-- HTM (React JSX alternativa) -->
+    <script src="https://unpkg.com/htm@3.1.1/dist/htm.umd.js" crossorigin></script>
+
+</head>
+
+<body>
+
+    <div id="log-root_"></div>
+    <div id="root"></div>
+    <div id="log-output"></div>
+
+    <script>
+        const originalLog = console.log;
+        function htmlLog(...args) {
+            const el = document.getElementById('log-output');
+            if (!el) return;
+
+            const line = document.createElement('div');
+
+            line.textContent = args
+                .map(arg => typeof arg === 'object'
+                    ? JSON.stringify(arg, null, 2)
+                    : String(arg)
+                )
+                .join(' ');
+
+            el.appendChild(line);
+        }
+
+
+        console.log = (...args) => {
+            originalLog(...args);
+            htmlLog(...args);
+        };
+    </script>
+    <script type="importmap">
+    {
+        "imports": {
+            "react": "https://esm.sh/react@18.3.1",
+            "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+            "react-dom": "https://esm.sh/react-dom@18.3.1",
+            "react-router-dom": "https://esm.sh/react-router-dom@7",
+            "react-redux": "https://esm.sh/react-redux@9",
+            "@reduxjs/toolkit": "https://esm.sh/@reduxjs/toolkit@2",
+            "react-bootstrap": "https://esm.sh/react-bootstrap@2"
+        }
+    }
+    </script>
+    <script type="text/babel" data-type="module" data-presets="react">
+        const { useState, useMemo } = React;
+        import { CardCapsule, LeftColumn, MiddleColumn, Row }
+            from "https://unpkg.com/@hrbolek/uoisfrontend-template@0.6.2/dist/es/index.js"
+
+        const Counter = () => {
+            const [counter, setCounter] = useState(0)
+            const Plus = () => {
+                console.log(counter, '=>', counter + 1)
+                setCounter(prev => prev + 1)
+            }
+            return (
+                <button className="btn btn-sm btn-outline-primary" onClick={Plus}>
+                    {counter} + 1
+                </button>
+            )
+        }
+
+        const MyApp = () => {
+            console.log("MyApp")
+            return (
+                <CardCapsule title={<> demo <Counter /> </>}>
+                    <Row>
+                        <LeftColumn>
+                            <CardCapsule title="Left">
+                                Hello world <Counter />
+                            </CardCapsule>
+                        </LeftColumn>
+                        <MiddleColumn>
+                            <CardCapsule title="Middle">
+                                Hello world <Counter />
+                            </CardCapsule>
+                        </MiddleColumn>
+                    </Row>
+                </CardCapsule>
+            )
+        }
+        // console.log("mount", mount)
+        ReactDOM.createRoot(document.getElementById("root")).render(<MyApp />);
+    </script>
+</body>
+
+</html>

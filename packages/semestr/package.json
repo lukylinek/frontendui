@@ -1,0 +1,29 @@
+{
+    "name": "@hrbolek/pck_semestr",
+    "version": "0.6.3",
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "_main": "src/index.js",
+    "_module": "src/index.js",
+    "files": [
+        "dist",
+        "src"
+    ],
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "vite",
+        "build": "vite build",
+        "prepublishOnly": "npm run build"
+    },
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "react-bootstrap-icons": "^1.11.5",
+        "react-router": "^7.0.2",
+        "@hrbolek/uoisfrontend-shared": "*",
+        "@hrbolek/uoisfrontend-gql-shared": "*"
+    }
+}

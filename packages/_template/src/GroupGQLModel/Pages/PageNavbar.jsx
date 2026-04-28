@@ -13,8 +13,9 @@ import { VectorItemsURI as UserVectorItemsURI } from '../../UserGQLModel/Compone
 import { VectorItemsURI as GroupTypeVectorItemsURI } from '../../GroupTypeGQLModel/Components/Link';
 import { CreateGroupInserMembershipButton } from '../Mutations/AddMembership';
 import { UpdateButton, UpdateLink } from '../Mutations/Update';
-import { AddRoleOnGroupButton } from '../../RoleGQLModel/Mutations/AddRoleonGroup';
+// import { AddRoleOnGroupButton } from '../../RoleGQLModel/Mutations/AddRoleonGroup';
 import { Link } from '../../../../_template/src/Base/Components';
+import { ReadItemUniverisityURI } from './PageVectorBase';
 
 /**
  * Allow to use HashContainer for determination which component at page will be rendered.
@@ -215,15 +216,21 @@ export const MyNavDropdown = ({ item }) => {
             <NavDropdown.Item as={ProxyLink} to={GroupVectorItemsURI}>
                 Seznam všech skupin
             </NavDropdown.Item>
+
+            <NavDropdown.Item as={ProxyLink} to={ReadItemUniverisityURI.replace(":id", item?.id)} disabled={!hasProperType} item={item}>
+                Univerzitní struktura
+            </NavDropdown.Item>
+
+            <NavDropdown.Divider />
             
             <NavDropdown.Item as={GroupLink} item={item} action="roles" disabled={!hasProperType}>
-                Role {hasProperType&&item?.name}
+                Role {hasProperType&& <>({item?.name})</>}
             </NavDropdown.Item>
             <NavDropdown.Item as={GroupLink} item={item} action="subgroups" disabled={!hasProperType}>
-                Podskupiny {hasProperType&&item?.name}
+                Podskupiny {hasProperType&& <>({item?.name})</>}
             </NavDropdown.Item>
             <NavDropdown.Item as={GroupLink} item={item} action="memberships" disabled={!hasProperType}>
-                Členové {hasProperType&&item?.name}
+                Členové {hasProperType&& <>({item?.name})</>}
             </NavDropdown.Item>
         
         
@@ -234,7 +241,7 @@ export const MyNavDropdown = ({ item }) => {
                 item={item}
                 disabled={!hasProperType} 
             >
-                Upravit {hasProperType&&item?.name}
+                Upravit {hasProperType&& <>({item?.name})</>}
             </NavDropdown.Item>
             <NavDropdown.Item 
                 as={CreateGroupInserMembershipButton} 
@@ -242,9 +249,9 @@ export const MyNavDropdown = ({ item }) => {
                 disabled={!hasProperType} 
                 item={item}
             >
-                Nové členství {hasProperType&&item?.name}
+                Nové členství {hasProperType&& <>({item?.name})</>}
             </NavDropdown.Item>
-            <NavDropdown.Item 
+            {/* <NavDropdown.Item 
                 as={AddRoleOnGroupButton} 
                 // item={item} 
                 rbacitem={item}
@@ -254,8 +261,8 @@ export const MyNavDropdown = ({ item }) => {
                 }}
                 disabled={!hasProperType}
             >
-                Nové oprávnění u {hasProperType&&item?.name}
-            </NavDropdown.Item>
+                Nové oprávnění {hasProperType&& <>({item?.name})</>}
+            </NavDropdown.Item> */}
             
             <NavDropdown.Divider />
             <NavDropdown.Item as={ProxyLink} to={`/generic/${item?.__typename}/__def/${item?.id}`} reloadDocument={false}>Definice</NavDropdown.Item >
