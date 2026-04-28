@@ -129,10 +129,12 @@ V rámci projektu jsme si vyzkoušeli:
 ## Možná vylepšení
 
 Do budoucna by bylo možné:
-
-- rozšířit `Large` fragment o další data
-- upravit vzhled stránky
-- vytvořit specializované komponenty pro konkrétní entity
+- doplnit editaci dalších atributů, například datumu, typu projektu nebo stavu dokončení
+- přidat výběrové pole pro typ projektu
+- přidat checkbox pro atribut `done`
+- doplnit create a delete mutace
+- lépe vyřešit oprávnění přes RBAC
+- upravit design tak, aby byl sjednocený se zbytkem aplikace
 
 ---
 
@@ -141,3 +143,30 @@ Do budoucna by bylo možné:
 Neimplementovali jsme celý projekt od začátku, ale naučili jsme se:
 
 **správně se zorientovat v existující aplikaci, napojit konkrétní entitu a upravit read-only stránku pro její zobrazení**
+
+
+---
+
+# Aktualizace projektu – vlastní layout a update mutace
+
+## 28. 4. 2026 – Přechod na nový backend stack
+
+Při dalším testování jsme zjistili, že původní `docker-compose.yml` ve frontendovém repozitáři neobsahoval službu pro projekty. Kvůli tomu backend neznal typy jako:
+
+- `ProjectGQLModel`
+- `ProjectInputFilter`
+- `projectPage`
+
+Frontend tedy měl připravenou stránku i GraphQL query, ale Apollo gateway neměla připojenou backend službu, která by model `ProjectGQLModel` poskytovala.
+
+Problém se vyřešil použitím backend/data stacku z repozitáře `_uois`, konkrétně přes:
+
+Výsledkem je stránka, která:
+- načte entitu `ProjectGQLModel` podle ID
+- zobrazí ji v přehledném detailním layoutu
+- zobrazuje základní informace o projektu
+- zobrazuje navázané podprojekty
+- umožňuje přejít do editace
+- umožňuje upravit atribut `name`
+- ukládá změnu přes GraphQL mutaci `projectUpdate`
+- pracuje s `id` a `lastchange`, které jsou nutné pro bezpečný update
