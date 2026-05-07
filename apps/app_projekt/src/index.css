@@ -1,47 +1,38 @@
-@media screen {
-    .screen-only {
-      display: block;
-    }
-    .print-only {
-      display: none;
-    }
+body {
+    overflow-x: hidden;
 }
 
-@media print {
-    .screen-only {
-      display: none;
-    }
-    .print-only {
-      display: block;
-    }
+fieldset {
+    max-width: 100%;
+    overflow-x: auto;
 }
 
-@media print {
-    /* Start a new page before each section */
-    .page-break-before {
-      break-before: page;
-    }
+table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+}
 
-    /* Ensure a page break after the section */
-    .page-break-after {
-      break-after: page;
-    }
+th,
+td {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+}
 
-    /* Prevent page breaks inside this container */
-    .no-page-break {
-      break-inside: avoid;
-    }
+pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
 
-    /* Fallback for older browsers */
-    .page-break-before {
-      page-break-before: always;
-    }
+.container,
+.container-fluid {
+    max-width: 100%;
+}
 
-    .page-break-after {
-      page-break-after: always;
-    }
-
-    .no-page-break {
-      page-break-inside: avoid;
-    }
-  }
+.card,
+fieldset {
+    border-radius: 8px;
+}
