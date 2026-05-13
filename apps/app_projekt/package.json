@@ -1,8 +1,22 @@
 {
   "name": "@lukylinek/app_projekt",
   "private": false,
-  "version": "0.5.1",
+  "version": "0.5.2",
   "type": "module",
+  "main": "dist/umd/StandaloneEntry.js",
+  "module": "dist/es/StandaloneEntry.js",
+  "files": [
+    "dist",
+    "src",
+    "index.html",
+    "library.html",
+    "library.test.html",
+    "vite.config.js",
+    "eslint.config.js"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
