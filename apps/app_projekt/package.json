@@ -1,14 +1,14 @@
 {
   "name": "@lukylinek/app_projekt",
   "private": false,
-  "version": "0.5.0",
+  "version": "0.5.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview", 
-    "build:production": "NODE_ENV=production vite build"    
+    "preview": "vite preview",
+    "build:production": "NODE_ENV=production vite build"
   },
   "dependencies": {
     "react": "^19.2.1",
@@ -17,7 +17,6 @@
     "bootstrap": "^5.3.3",
     "@popperjs/core": "^2.11.8",
     "@apollo/client": "^4.0.10",
-
     "@hrbolek/uoisfrontend-template": "*",
     "@hrbolek/uoisfrontend-shared": "*",
     "@hrbolek/uoisfrontend-gql-shared": "*",

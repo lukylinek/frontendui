@@ -1,5 +1,7 @@
+import { useState } from "react"
+
 import { CardCapsule, VectorItemsURI } from "../Components"
-import { UpdateButton, UpdateLink } from "./Update"
+import { UpdateBody, UpdateButton } from "./Update"
 import { ProxyLink } from "../../../../_template/src/Base/Components/ProxyLink"
 
 export const PageLink = ({ children, preserveHash = true, preserveSearch = true, ...props }) => {
@@ -16,19 +18,31 @@ export const PageLink = ({ children, preserveHash = true, preserveSearch = true,
 };
 
 export const InteractiveMutations = ({ item }) => {
+    const [showInlineEdit, setShowInlineEdit] = useState(false)
+
     return (
         <CardCapsule item={item} title="Nástroje">
             <PageLink className="btn btn-outline-success">
                 Stránka
             </PageLink>
 
-            <UpdateLink className="btn btn-outline-success" item={item}>
+            <button
+                type="button"
+                className="btn btn-outline-success"
+                onClick={() => setShowInlineEdit((value) => !value)}
+            >
                 Upravit
-            </UpdateLink>
+            </button>
 
             <UpdateButton className="btn btn-outline-success" item={item}>
                 Upravit Dialog
             </UpdateButton>
+
+            {showInlineEdit && (
+                <div className="mt-3">
+                    <UpdateBody />
+                </div>
+            )}
         </CardCapsule>
     )
 }

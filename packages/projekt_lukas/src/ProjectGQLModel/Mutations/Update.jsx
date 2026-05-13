@@ -11,14 +11,7 @@ import { UpdateAsyncAction } from "../Queries";
 const DefaultContent = (props) => <MediumEditableContent {...props} />;
 const mutationAsyncAction = UpdateAsyncAction;
 
-/*
- * Template původně používal:
- * oneOfRoles: ["superadmin"]
- * mode: "absolute"
- *
- * My používáme reálné role, které má uživatel přidané přes backend RBAC.
- * Role jsme přidali přes GraphQL mutaci roleInsert.
- */
+
 const permissions = {
     oneOfRoles: ["administrátor", "studijní administrátor"],
     mode: "item",

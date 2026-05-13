@@ -1,17 +1,8 @@
 import { PageItemBase } from "./PageBase"
-import { GeneratedContentBase } from "../../../../_template/src/Base/Pages/Page"
-import { LargeCard } from "../Components"
-
-const ReadContent = (props) => {
-    return (
-        <LargeCard item={props.item}>
-            <GeneratedContentBase {...props} />
-        </LargeCard>
-    )
-}
+import { ProjectReadContent } from "./ProjectReadContent"
 
 export const PageReadItem = ({
-    SubPage = ReadContent,
+    SubPage = ProjectReadContent,
     ...props
 }) => {
     return (

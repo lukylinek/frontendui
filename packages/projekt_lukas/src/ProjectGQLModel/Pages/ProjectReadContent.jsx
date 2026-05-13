@@ -1,8 +1,11 @@
+import { Link as RouterLink } from "react-router-dom"
+
 import { useGQLEntityContext } from "../../../../_template/src/Base/Helpers/GQLEntityProvider"
-import { UpdateItemURI } from "../Components"
+import { LargeCard, ReadItemURI } from "../Components"
 
 const formatDate = (value) => {
     if (!value) return "-"
+
     try {
         return new Date(value).toLocaleDateString("cs-CZ")
     } catch {
@@ -10,210 +13,195 @@ const formatDate = (value) => {
     }
 }
 
-const getEditURI = (item) => {
-    if (!item?.id) return "#"
-    return UpdateItemURI.replace(":id", item.id)
+const makeProjectDetailURI = (id) => {
+    if (!id) return "#"
+    return ReadItemURI.replace(":id", id)
 }
 
-const DetailRow = ({ label, value }) => (
-    <div style={{ marginBottom: "0.85rem" }}>
-        <div style={{ fontSize: "0.78rem", color: "#6c757d", fontWeight: 700, textTransform: "uppercase" }}>
-            {label}
-        </div>
-        <div style={{ fontSize: "0.95rem", wordBreak: "break-word" }}>
-            {value || "-"}
+const DetailLine = ({ label, value }) => (
+    <div className="d-flex justify-content-between gap-3 border-bottom py-2">
+        <strong className="text-muted">{label}</strong>
+        <span className="text-end text-break">{value ?? "-"}</span>
+    </div>
+)
+
+const ProjectHeader = ({ item }) => (
+    <div
+        className="p-4 mb-3 rounded shadow-sm"
+        style={{
+            background: "linear-gradient(135deg, #e8f1ff 0%, #ffffff 100%)",
+            border: "1px solid #cfe2ff",
+        }}
+    >
+        <div className="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div>
+                <div className="text-primary fw-bold mb-1">
+                    ProjectGQLModel
+                </div>
+
+                <h2 className="mb-1 text-primary">
+                    {item?.name ?? "Bez názvu"}
+                </h2>
+
+                <div className="text-muted">
+                    {item?.nameEn || "Anglický název není vyplněn"}
+                </div>
+            </div>
+
+            <span className="badge text-bg-primary fs-6">
+                {item?.done === true
+                    ? "Dokončeno"
+                    : item?.done === false
+                        ? "Nedokončeno"
+                        : ""}
+            </span>
         </div>
     </div>
 )
 
-const Card = ({ title, children }) => (
-    <div
-        style={{
-            border: "1px solid #d8dee4",
-            borderRadius: "10px",
-            background: "#fff",
-            marginBottom: "1rem",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
-        }}
-    >
-        {title && (
-            <div
-                style={{
-                    padding: "0.85rem 1rem",
-                    borderBottom: "1px solid #e9ecef",
-                    fontWeight: 800,
-                    color: "#495057",
-                    textTransform: "uppercase",
-                    fontSize: "0.9rem",
-                }}
-            >
-                {title}
+const Subprojects = ({ subprojects = [] }) => {
+    if (!subprojects.length) {
+        return (
+            <div className="alert alert-light border mb-0">
+                Projekt nemá žádné podprojekty.
             </div>
-        )}
-        <div style={{ padding: "1rem" }}>
-            {children}
+        )
+    }
+
+    return (
+        <div className="table-responsive">
+            <table className="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Název</th>
+                        <th>Anglický název</th>
+                        <th>Začátek</th>
+                        <th>Konec</th>
+                        <th>Stav</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {subprojects.map((project) => (
+                        <tr key={project.id}>
+                            <td className="fw-semibold">
+                                <RouterLink
+                                    to={makeProjectDetailURI(project.id)}
+                                    className="text-primary text-decoration-none"
+                                >
+                                    {project.name ?? "-"}
+                                </RouterLink>
+                            </td>
+
+                            <td>{project.nameEn ?? "-"}</td>
+                            <td>{formatDate(project.startdate)}</td>
+                            <td>{formatDate(project.enddate)}</td>
+
+                            <td>
+                                {project.done === true ? (
+                                    <span className="badge text-bg-success">
+                                        Dokončeno
+                                    </span>
+                                ) : project.done === false ? (
+                                    <span className="badge text-bg-warning">
+                                        Nedokončeno
+                                    </span>
+                                ) : (
+                                    <span className="badge text-bg-secondary">
+                                        
+                                    </span>
+                                )}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
-    </div>
-)
+    )
+}
 
 export const ProjectReadContent = () => {
     const { item } = useGQLEntityContext()
 
     if (!item) {
         return (
-            <div style={{ padding: "1.5rem" }}>
+            <div className="alert alert-warning">
                 Projekt nebyl nalezen.
             </div>
         )
     }
 
-    const subprojects = item.subprojects ?? []
-
     return (
-        <div style={{ padding: "1.25rem", background: "#f6f8fa", minHeight: "100vh" }}>
-            <div
-                style={{
-                    display: "grid",
-                    gridTemplateColumns: "340px 1fr",
-                    gap: "1.25rem",
-                    alignItems: "start",
-                }}
-            >
-                <div>
-                    <Card title="Detail">
-                        <h2 style={{ marginTop: 0, marginBottom: "0.35rem", fontSize: "1.35rem" }}>
-                            {item.name ?? "Bez názvu"}
-                        </h2>
+        <LargeCard item={item}>
+            <ProjectHeader item={item} />
 
-                        <div style={{ color: "#6c757d", marginBottom: "1.2rem" }}>
-                            ProjectGQLModel
+            <div className="row g-3">
+                <div className="col-12 col-lg-6">
+                    <div className="card shadow-sm h-100">
+                        <div className="card-header fw-bold">
+                            Informace o projektu
                         </div>
 
-                        <DetailRow label="ID" value={item.id} />
-                        <DetailRow label="Název" value={item.name} />
-                        <DetailRow label="Anglický název" value={item.nameEn} />
-                        <DetailRow label="Začátek" value={formatDate(item.startdate)} />
-                        <DetailRow label="Konec" value={formatDate(item.enddate)} />
-                        <DetailRow label="Typ projektu" value={item.type?.name ?? item.projectTypeId} />
-                        <DetailRow label="Finance" value={item.finance?.name ?? item.financeId} />
-                        <DetailRow label="Lastchange" value={item.lastchange} />
-                    </Card>
-
-                    <Card title="Nástroje">
-                        <a
-                            href={getEditURI(item)}
-                            style={{
-                                display: "block",
-                                padding: "0.55rem 0.8rem",
-                                border: "1px solid #0d6efd",
-                                borderRadius: "6px",
-                                color: "#0d6efd",
-                                textDecoration: "none",
-                                textAlign: "center",
-                                fontWeight: 700,
-                                marginBottom: "0.6rem",
-                            }}
-                        >
-                            Upravit projekt
-                        </a>
-
-                        <a
-                            href="/projekt/project/list"
-                            style={{
-                                display: "block",
-                                padding: "0.55rem 0.8rem",
-                                border: "1px solid #6c757d",
-                                borderRadius: "6px",
-                                color: "#495057",
-                                textDecoration: "none",
-                                textAlign: "center",
-                                fontWeight: 700,
-                            }}
-                        >
-                            Zpět na seznam
-                        </a>
-                    </Card>
+                        <div className="card-body">
+                            <DetailLine label="ID" value={item.id} />
+                            <DetailLine label="Název" value={item.name} />
+                            <DetailLine label="Anglický název" value={item.nameEn} />
+                            <DetailLine label="Začátek" value={formatDate(item.startdate)} />
+                            <DetailLine label="Konec" value={formatDate(item.enddate)} />
+                            <DetailLine label="Typ projektu" value={item.type?.name ?? item.projectTypeId} />
+                            <DetailLine label="Finance" value={item.finance?.name ?? item.financeId} />
+                            <DetailLine label="Master project" value={item.masterproject?.name ?? item.masterprojectId} />
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <Card title="Informace o projektu">
-                        <div
-                            style={{
-                                display: "grid",
-                                gridTemplateColumns: "1fr 1fr",
-                                gap: "1rem",
-                            }}
-                        >
-                            <DetailRow label="Název" value={item.name} />
-                            <DetailRow label="Anglický název" value={item.nameEn} />
-                            <DetailRow label="Start date" value={formatDate(item.startdate)} />
-                            <DetailRow label="End date" value={formatDate(item.enddate)} />
-                            <DetailRow label="Dokončeno" value={item.done === true ? "Ano" : item.done === false ? "Ne" : "-"} />
-                            <DetailRow label="Master project" value={item.masterproject?.name ?? item.masterprojectId} />
+                <div className="col-12 col-lg-6">
+                    <div className="card shadow-sm h-100">
+                        <div className="card-header fw-bold">
+                            Technické údaje
                         </div>
 
-                        {item.description && (
-                            <div style={{ marginTop: "1rem" }}>
-                                <DetailRow label="Popis" value={item.description} />
-                            </div>
-                        )}
-                    </Card>
-
-                    <Card title={`Podprojekty (${subprojects.length})`}>
-                        {subprojects.length === 0 ? (
-                            <div style={{ color: "#6c757d" }}>
-                                Tento projekt nemá žádné podprojekty.
-                            </div>
-                        ) : (
-                            <div style={{ overflowX: "auto" }}>
-                                <table
-                                    style={{
-                                        width: "100%",
-                                        borderCollapse: "collapse",
-                                        fontSize: "0.95rem",
-                                    }}
-                                >
-                                    <thead>
-                                        <tr style={{ borderBottom: "2px solid #dee2e6" }}>
-                                            <th style={{ textAlign: "left", padding: "0.65rem" }}>Název</th>
-                                            <th style={{ textAlign: "left", padding: "0.65rem" }}>Anglický název</th>
-                                            <th style={{ textAlign: "left", padding: "0.65rem" }}>Začátek</th>
-                                            <th style={{ textAlign: "left", padding: "0.65rem" }}>Konec</th>
-                                            <th style={{ textAlign: "left", padding: "0.65rem" }}>Dokončeno</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {subprojects.map((project) => (
-                                            <tr
-                                                key={project.id}
-                                                style={{ borderBottom: "1px solid #e9ecef" }}
-                                            >
-                                                <td style={{ padding: "0.65rem" }}>
-                                                    <a href={`/projekt/project/view/${project.id}`}>
-                                                        {project.name ?? "-"}
-                                                    </a>
-                                                </td>
-                                                <td style={{ padding: "0.65rem" }}>
-                                                    {project.nameEn ?? "-"}
-                                                </td>
-                                                <td style={{ padding: "0.65rem" }}>
-                                                    {formatDate(project.startdate)}
-                                                </td>
-                                                <td style={{ padding: "0.65rem" }}>
-                                                    {formatDate(project.enddate)}
-                                                </td>
-                                                <td style={{ padding: "0.65rem" }}>
-                                                    {project.done === true ? "Ano" : project.done === false ? "Ne" : "-"}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-                    </Card>
+                        <div className="card-body">
+                            <DetailLine label="Created" value={formatDate(item.created)} />
+                            <DetailLine label="Lastchange" value={item.lastchange} />
+                            <DetailLine label="Created by" value={item.createdby?.fullname ?? item.createdbyId} />
+                            <DetailLine label="Changed by" value={item.changedby?.fullname ?? item.changedbyId} />
+                            <DetailLine label="RBAC object" value={item.rbacobjectId} />
+                            <DetailLine label="Project type ID" value={item.projectTypeId} />
+                        </div>
+                    </div>
                 </div>
+
+                <div className="col-12">
+                    <div className="card shadow-sm">
+                        <div className="card-header fw-bold d-flex justify-content-between align-items-center">
+                            <span>Podprojekty</span>
+
+                            <span className="badge text-bg-primary">
+                                {item.subprojects?.length ?? 0}
+                            </span>
+                        </div>
+
+                        <div className="card-body">
+                            <Subprojects subprojects={item.subprojects} />
+                        </div>
+                    </div>
+                </div>
+
+                {item.description && (
+                    <div className="col-12">
+                        <div className="card shadow-sm">
+                            <div className="card-header fw-bold">
+                                Popis
+                            </div>
+
+                            <div className="card-body">
+                                {item.description}
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
-        </div>
+        </LargeCard>
     )
 }
