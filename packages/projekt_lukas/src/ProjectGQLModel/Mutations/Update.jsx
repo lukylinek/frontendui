@@ -14,7 +14,7 @@ const mutationAsyncAction = UpdateAsyncAction;
 
 const permissions = {
     oneOfRoles: ["administrátor", "studijní administrátor"],
-    mode: "item",
+    mode: "absolute",
 };
 
 export const UpdateLink = ({

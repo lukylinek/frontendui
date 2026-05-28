@@ -2,39 +2,50 @@ import { createQueryStrLazy } from "@hrbolek/uoisfrontend-gql-shared";
 import { LargeFragment } from "./Fragments";
 import { createAsyncGraphQLAction2 } from "../../../../dynamic/src/Core/createAsyncGraphQLAction2";
 
-
 const InsertMutationStr = `
-mutation roleTypeInsert(
-	$mastertypeId: UUID # null, 
-	$id: UUID # null, 
-	$name: String # null, 
-	$nameEn: String # null, 
-	$subtypes: [RoleTypeInsertGQLModel!] # null
+mutation ProjectInsert(
+    $id: UUID
+    $name: String
+    $nameEn: String
+    $description: String
+    $done: Boolean
+    $projectTypeId: UUID
+    $masterprojectId: UUID!
 ) {
-  roleTypeInsert(
-	roleType: {
-	mastertypeId: $mastertypeId, 
-	id: $id, 
-	name: $name, 
-	nameEn: $nameEn, 
-	subtypes: $subtypes}
+  projectInsert(
+    project: {
+      id: $id
+      name: $name
+      nameEn: $nameEn
+      description: $description
+      done: $done
+      projectTypeId: $projectTypeId
+      masterprojectId: $masterprojectId
+    }
   ) {
-    ... on InsertError { ...InsertError }
-    ... on RoleTypeGQLModel { ...Large }
+    ... on ProjectGQLModel {
+      ...Large
+    }
+
+    ... on ProjectGQLModelInsertError {
+      ...ProjectGQLModelInsertError
+    }
   }
 }
 
-
-fragment InsertError on InsertError {
+fragment ProjectGQLModelInsertError on ProjectGQLModelInsertError {
   __typename
+  Entity {
+    ...Large
+  }
   msg
-  failed
   code
+  failed
   location
   input
-
 }
-`
+`;
 
-const InsertMutation = createQueryStrLazy(`${InsertMutationStr}`, LargeFragment)
-export const InsertAsyncAction = createAsyncGraphQLAction2(InsertMutation)
+const InsertMutation = createQueryStrLazy(`${InsertMutationStr}`, LargeFragment);
+
+export const InsertAsyncAction = createAsyncGraphQLAction2(InsertMutation);
