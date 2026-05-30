@@ -1,12 +1,5 @@
-import { Link as RouterLink } from "react-router-dom"
-
-import { ReadItemURI } from "../../Components"
+import { Link } from "../../Components/Link"
 import { formatDate } from "./helpers"
-
-const makeProjectDetailURI = (id) => {
-    if (!id) return "#"
-    return ReadItemURI.replace(":id", id)
-}
 
 export const Subprojects = ({ subprojects = [] }) => {
     if (!subprojects.length) {
@@ -56,12 +49,7 @@ export const Subprojects = ({ subprojects = [] }) => {
                             {subprojects.map((project) => (
                                 <tr key={project.id}>
                                     <td className="fw-semibold">
-                                        <RouterLink
-                                            to={makeProjectDetailURI(project.id)}
-                                            className="text-decoration-none"
-                                        >
-                                            {project.name ?? "-"}
-                                        </RouterLink>
+                                        <Link item={project} />
                                     </td>
 
                                     <td>{project.nameEn ?? "-"}</td>

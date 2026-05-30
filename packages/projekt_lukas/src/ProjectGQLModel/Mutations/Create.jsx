@@ -1,20 +1,39 @@
 import { CreateURI, MediumEditableContent, ReadItemURI } from "../Components"
 import { InsertAsyncAction } from "../Queries"
-import { 
-    CreateBody as BaseCreateBody, 
-    CreateButton as BaseCreateButton, 
-    CreateDialog as BaseCreateDialog, 
+import {
+    CreateBody as BaseCreateBody,
+    CreateButton as BaseCreateButton,
+    CreateDialog as BaseCreateDialog,
     CreateLink  as BaseCreateLink
 } from "../../../../_template/src/Base/Mutations/Create"
+import { Label } from "../../../../_template/src/Base/FormControls/Label"
+import { TextArea } from "../../../../_template/src/Base/FormControls/TextArea"
+import { Input } from "../../../../_template/src/Base/FormControls/Input"
 
-const DefaultContent = (props) => <MediumEditableContent {...props} />
+const DefaultContent = ({ item, onChange, onBlur, children }) => (
+    <MediumEditableContent item={item} onChange={onChange} onBlur={onBlur}>
+        <Input id="description" label="Popis" className="form-control" value={item?.description ?? ""} onChange={onChange} onBlur={onBlur} />
+        <Label title="Dokončeno">
+            <select
+                id="done"
+                className="form-control"
+                value={String(item?.done ?? false)}
+                onChange={(e) => onChange({ target: { id: "done", value: e.target.value === "true" } })}
+            >
+                <option value="false">Nedokončeno</option>
+                <option value="true">Dokončeno</option>
+            </select>
+        </Label>
+        {children}
+    </MediumEditableContent>
+)
 const MutationAsyncAction = InsertAsyncAction
 
 const permissions = {
     oneOfRoles: ["administrátor", "studijní administrátor"],
     mode: "absolute",
 }
-const defaultitem = { name: "Nový" };
+const defaultitem = { name: "Nový projekt", nameEn: "New project", done: false };
 
 /**
  * Wrapper nad `BaseCreateLink` (alias importu `CreateLink` z Base/Mutations/Create),

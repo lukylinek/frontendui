@@ -3,10 +3,10 @@ import { DateTimeFilter, Filter as BaseFilter, StringFilter, UUIDFilter } from "
 export const Filter = ({ id, onChange: handleChange, children }) => {
     return (
         <BaseFilter id={id} onChange={handleChange}>
-            <UUIDFilter id="id" />
-            <StringFilter id="name" />
-            <DateTimeFilter id="created" emitUtcIso={false} />
-            {/* <FloatFilter id="count" /> */}
+            <UUIDFilter id="id" label="ID" />
+            <StringFilter id="name" label="Název" />
+            <DateTimeFilter id="startdate" label="Začátek od" emitUtcIso={false} />
+            <DateTimeFilter id="enddate" label="Konec do" emitUtcIso={false} />
             {children}
         </BaseFilter>
     )

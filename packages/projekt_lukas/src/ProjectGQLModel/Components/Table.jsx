@@ -1,7 +1,7 @@
-import { Table as BaseTable } from "../../../../_template/src/Base/Components/Table" 
+import { ProjectListTable } from "../Pages/ProjectListTable"
 
 export const Table = ({ data }) => {
     return (
-        <BaseTable data={data} />
+        <ProjectListTable items={data} />
     )
 }

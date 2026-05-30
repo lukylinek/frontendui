@@ -51,6 +51,13 @@ export const GanttTimeline = ({ item }) => {
 
     const totalDays = daysBetween(minDate, maxDate)
 
+    const today = new Date()
+    const isTodayVisible = today >= minDate && today <= maxDate
+
+    const todayOffset = isTodayVisible
+        ? Math.max(0, (daysBetween(minDate, today) - 1) / totalDays) * 100
+        : null
+
     return (
         <div className="card shadow-sm mb-4">
             <div className="card-header fw-bold d-flex justify-content-between align-items-center">
@@ -66,6 +73,21 @@ export const GanttTimeline = ({ item }) => {
                     <span>{formatDate(minDate)}</span>
                     <span>{formatDate(maxDate)}</span>
                 </div>
+
+                {isTodayVisible && (
+                    <div className="d-flex align-items-center gap-2 text-muted small mb-3">
+                        <span
+                            style={{
+                                display: "inline-block",
+                                width: "12px",
+                                height: "12px",
+                                backgroundColor: "#dc3545",
+                                borderRadius: "2px",
+                            }}
+                        />
+                        <span>Dnes: {formatDate(today)}</span>
+                    </div>
+                )}
 
                 <div className="d-flex flex-column gap-3">
                     {validProjects.map((project) => {
@@ -96,6 +118,19 @@ export const GanttTimeline = ({ item }) => {
                                             overflow: "hidden",
                                         }}
                                     >
+                                        {isTodayVisible && (
+                                            <div
+                                                className="position-absolute top-0 h-100"
+                                                title="Dnes"
+                                                style={{
+                                                    left: `${todayOffset}%`,
+                                                    width: "3px",
+                                                    backgroundColor: "#dc3545",
+                                                    zIndex: 3,
+                                                }}
+                                            />
+                                        )}
+
                                         <div
                                             className={`position-absolute top-0 h-100 rounded d-flex align-items-center px-2 text-white small fw-semibold ${
                                                 project.isMain ? "bg-primary" : "bg-success"
@@ -104,6 +139,7 @@ export const GanttTimeline = ({ item }) => {
                                                 left: `${left}%`,
                                                 width: `${width}%`,
                                                 minWidth: "75px",
+                                                zIndex: 2,
                                             }}
                                         >
                                             {project.done === true ? "Hotovo" : "Probíhá"}

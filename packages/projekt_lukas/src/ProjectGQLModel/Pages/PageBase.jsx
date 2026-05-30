@@ -1,5 +1,5 @@
 import { ReadAsyncAction } from "../Queries"
-import { PageItemBase as PageItemBase_} from "../../../../_template/src/Base/Pages/Page"
+import { PageItemBase as PageItemBase_ } from "../../../../_template/src/Base/Pages/Page"
 import { LargeCard } from "../Components"
 
 
@@ -27,21 +27,21 @@ import { LargeCard } from "../Components"
  * @returns {import("react").JSX.Element}
  *   Provider s navigací (`PageNavbar`) a obsahem stránky (`children`).
  */
-export const PageItemBase = ({ 
+export const PageItemBase = ({
     queryAsyncAction=ReadAsyncAction,
     PageNavbar=()=>null,
-    ItemLayout = ({ children }) => <div style={{ padding: "20px" }}>{children}</div>,
+    ItemLayout=LargeCard,
     SubPage=null,
     ...props
 }) => {
     return (
-        <PageItemBase_ 
-            queryAsyncAction={queryAsyncAction} 
+        <PageItemBase_
+            queryAsyncAction={queryAsyncAction}
             PageNavbar={PageNavbar}
             ItemLayout={ItemLayout}
             SubPage={SubPage}
-            {...props} 
-        />  
+            {...props}
+        />
     )
 }
 

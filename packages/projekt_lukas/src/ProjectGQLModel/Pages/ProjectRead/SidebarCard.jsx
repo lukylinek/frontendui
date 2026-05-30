@@ -15,8 +15,8 @@ export const SidebarCard = ({ item }) => {
                 <DetailRow label="Typ projektu" value={item.type?.name ?? "-"} />
                 <DetailRow label="Finance" value={item.finance?.name ?? "-"} />
                 <DetailRow label="Projekt" value={item.masterproject?.name ?? "-"} />
-                <DetailRow label="Uživatel" value="Zdeňka Šimečková" />
-                <DetailRow label="Datum" value={new Date().toLocaleDateString("cs-CZ")} />
+                <DetailRow label="Vytvořil" value={item.createdby?.fullname ?? "-"} />
+                <DetailRow label="Vytvořeno" value={formatDate(item.created)} />
 
                 <div className="mt-4">
                     <InteractiveMutations item={item} />

@@ -24,7 +24,7 @@ function safeParseWhere(sp, paramName = "where") {
 }
 
 // 
-const filterParameterName = "gr_where"
+const filterParameterName = "project_where"
 export const PageVector = ({ children, queryAsyncAction = ReadPageAsyncAction }) => {
     
     const [sp] = useSearchParams();

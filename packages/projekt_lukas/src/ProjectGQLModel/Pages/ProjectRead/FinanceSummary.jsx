@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom"
+import { ProxyLink } from "../../../../../_template/src/Base/Components/ProxyLink"
 import { formatMoney } from "./helpers"
 
 const makeFinanceDetailURI = (id) => {
@@ -49,12 +49,12 @@ export const FinanceSummary = ({ finance }) => {
                             <div className="fw-bold mb-2">Název financí</div>
 
                             {finance.id ? (
-                                <RouterLink
+                                <ProxyLink
                                     to={makeFinanceDetailURI(finance.id)}
                                     className="text-decoration-none"
                                 >
                                     {financeName}
-                                </RouterLink>
+                                </ProxyLink>
                             ) : (
                                 <div>{financeName}</div>
                             )}
