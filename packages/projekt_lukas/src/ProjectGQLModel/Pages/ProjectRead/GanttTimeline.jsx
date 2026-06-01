@@ -142,7 +142,13 @@ export const GanttTimeline = ({ item }) => {
                                                 zIndex: 2,
                                             }}
                                         >
-                                            {project.done === true ? "Hotovo" : "Probíhá"}
+                                            {project.done === true
+                                                ? "Hotovo"
+                                                : today > project.end
+                                                    ? "Po termínu"
+                                                    : today < project.start
+                                                        ? "Plánováno"
+                                                        : "Probíhá"}
                                         </div>
                                     </div>
                                 </div>
