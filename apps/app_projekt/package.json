@@ -1,7 +1,7 @@
 {
   "name": "@lukylinek/app_projekt",
   "private": false,
-  "version": "0.5.2",
+  "version": "0.5.3",
   "type": "module",
   "main": "dist/umd/StandaloneEntry.js",
   "module": "dist/es/StandaloneEntry.js",
