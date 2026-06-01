@@ -1,6 +1,6 @@
 import { URIRootObj } from "../../uriroot"
 
-const ProjectRoot = URIRootObj.model("project")
+const ProjectRoot = URIRootObj.model("ProjectGQLModel")
 
 export const ListURI = String(ProjectRoot.action("list"))
 export const CreateURI = String(ProjectRoot.action("create"))
