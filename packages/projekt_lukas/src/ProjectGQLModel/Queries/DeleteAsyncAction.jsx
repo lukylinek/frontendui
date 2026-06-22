@@ -20,7 +20,7 @@ mutation ProjectDelete(
 fragment ProjectGQLModelDeleteError on ProjectGQLModelDeleteError {
   __typename
   Entity {
-    ...Large
+    ...ProjectLarge
   }
   msg
   code

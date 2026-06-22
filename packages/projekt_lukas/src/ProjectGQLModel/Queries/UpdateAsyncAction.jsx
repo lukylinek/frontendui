@@ -19,7 +19,7 @@ mutation projectUpdate(
     }
   ) {
     ... on ProjectGQLModel {
-      ...Large
+      ...ProjectLarge
     }
     ... on ProjectGQLModelUpdateError {
       ...Error
@@ -30,7 +30,7 @@ mutation projectUpdate(
 fragment Error on ProjectGQLModelUpdateError {
   __typename
   Entity {
-    ...Large
+    ...ProjectLarge
   }
   msg
   failed

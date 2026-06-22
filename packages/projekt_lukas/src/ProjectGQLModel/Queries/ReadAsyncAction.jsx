@@ -5,7 +5,7 @@ import { createAsyncGraphQLAction2 } from "../../../../dynamic/src/Core/createAs
 const ReadQueryStr = `
 query projectById($id: UUID!) {
   projectById(id: $id) {
-    ...Large
+    ...ProjectLarge
   }
 }
 `

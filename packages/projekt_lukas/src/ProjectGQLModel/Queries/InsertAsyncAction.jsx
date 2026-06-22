@@ -24,7 +24,7 @@ mutation ProjectInsert(
     }
   ) {
     ... on ProjectGQLModel {
-      ...Large
+      ...ProjectLarge
     }
 
     ... on ProjectGQLModelInsertError {
@@ -36,7 +36,7 @@ mutation ProjectInsert(
 fragment ProjectGQLModelInsertError on ProjectGQLModelInsertError {
   __typename
   Entity {
-    ...Large
+    ...ProjectLarge
   }
   msg
   code

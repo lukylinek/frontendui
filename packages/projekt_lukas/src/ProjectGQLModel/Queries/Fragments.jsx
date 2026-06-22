@@ -1,7 +1,7 @@
 import { createQueryStrLazy } from "@hrbolek/uoisfrontend-gql-shared"
 
 const LinkFragmentStr = `
-fragment Link on ProjectGQLModel {
+fragment ProjectLink on ProjectGQLModel {
   __typename
   id
   lastchange
@@ -15,17 +15,17 @@ fragment Link on ProjectGQLModel {
 `
 
 const MediumFragmentStr = `
-fragment Medium on ProjectGQLModel {
-  ...Link
+fragment ProjectMedium on ProjectGQLModel {
+  ...ProjectLink
   rbacobject {
-    ...RBRoles
+    ...ProjectRBRoles
   }
 }
 `
 
 const LargeFragmentStr = `
-fragment Large on ProjectGQLModel {
-  ...Medium
+fragment ProjectLarge on ProjectGQLModel {
+  ...ProjectMedium
   path
   done
   startdate
@@ -64,6 +64,11 @@ fragment Large on ProjectGQLModel {
     startdate
     enddate
     done
+    finance {
+      __typename
+      id
+      name
+    }
   }
 
   finance {
@@ -87,7 +92,7 @@ fragment Large on ProjectGQLModel {
 `
 
 const RoleFragmentStr = `
-fragment Role on RoleGQLModel {
+fragment ProjectRole on RoleGQLModel {
   __typename
   id
   lastchange
@@ -112,7 +117,7 @@ fragment Role on RoleGQLModel {
 `
 
 const RBACFragmentStr = `
-fragment RBRoles on RBACObjectGQLModel {
+fragment ProjectRBRoles on RBACObjectGQLModel {
   __typename
   id
   currentUserRoles {

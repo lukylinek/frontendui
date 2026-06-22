@@ -5,7 +5,7 @@ import { createAsyncGraphQLAction2 } from "../../../../dynamic/src/Core/createAs
 const ReadPageQueryStr = `
 query projectPage($skip: Int, $limit: Int, $orderby: String, $where: ProjectInputFilter) {
   projectPage(skip: $skip, limit: $limit, orderby: $orderby, where: $where) {
-    ...Large
+    ...ProjectLarge
   }
 }
 `
