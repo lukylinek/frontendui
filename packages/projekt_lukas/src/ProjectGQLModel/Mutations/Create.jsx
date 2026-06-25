@@ -7,8 +7,52 @@ import {
     CreateLink  as BaseCreateLink
 } from "../../../../_template/src/Base/Mutations/Create"
 import { Label } from "../../../../_template/src/Base/FormControls/Label"
-import { TextArea } from "../../../../_template/src/Base/FormControls/TextArea"
 import { Input } from "../../../../_template/src/Base/FormControls/Input"
+import { useEffect, useState } from "react"
+import { useGQLClient } from "../../../../dynamic/src/Store"
+import { EntityLookup } from "../../../../_template/src/Base/FormControls/EntityLookup"
+import { SearchAsyncAction as ProjectSearchAsyncAction } from "../Queries/SearchAsyncAction"
+
+const PROJECT_TYPE_QUERY = `
+query {
+  projectTypePage(skip: 0, limit: 200) {
+    __typename
+    id
+    name
+    nameEn
+  }
+}
+`
+
+const ProjectTypeSelect = ({ value, onChange }) => {
+    const [types, setTypes] = useState([])
+    const gqlClient = useGQLClient()
+
+    useEffect(() => {
+        if (!gqlClient) return
+        gqlClient.query(PROJECT_TYPE_QUERY)
+            .then(result => setTypes(result?.data?.projectTypePage ?? []))
+            .catch(() => {})
+    }, [gqlClient])
+
+    return (
+        <Label title="Typ projektu">
+            <select
+                id="projectTypeId"
+                className="form-control"
+                value={value ?? ""}
+                onChange={(e) => onChange({ target: { id: "projectTypeId", value: e.target.value || null } })}
+            >
+                <option value="">— bez typu —</option>
+                {types.map((t) => (
+                    <option key={t.id} value={t.id}>
+                        {t.name}{t.nameEn ? ` / ${t.nameEn}` : ""}
+                    </option>
+                ))}
+            </select>
+        </Label>
+    )
+}
 
 const DefaultContent = ({ item, onChange, onBlur, children }) => (
     <MediumEditableContent item={item} onChange={onChange} onBlur={onBlur}>
@@ -24,6 +68,14 @@ const DefaultContent = ({ item, onChange, onBlur, children }) => (
                 <option value="true">Dokončeno</option>
             </select>
         </Label>
+        <ProjectTypeSelect value={item?.projectTypeId} onChange={onChange} />
+        <EntityLookup
+            id="masterprojectId"
+            label="Nadřazený projekt *"
+            asyncAction={ProjectSearchAsyncAction}
+            onChange={onChange}
+            onSelect={() => ({ clear: true })}
+        />
         {children}
     </MediumEditableContent>
 )

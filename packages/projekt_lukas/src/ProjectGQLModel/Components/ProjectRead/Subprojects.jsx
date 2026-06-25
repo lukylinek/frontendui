@@ -1,4 +1,4 @@
-import { Link } from "../../Components/Link"
+import { Link } from "../Link"
 import { formatDate } from "./helpers"
 
 export const Subprojects = ({ subprojects = [] }) => {
@@ -7,12 +7,8 @@ export const Subprojects = ({ subprojects = [] }) => {
             <div className="card shadow-sm">
                 <div className="card-header fw-bold d-flex justify-content-between align-items-center">
                     <span>PODPROJEKTY</span>
-
-                    <span className="badge text-bg-secondary">
-                        0
-                    </span>
+                    <span className="badge text-bg-secondary">0</span>
                 </div>
-
                 <div className="card-body">
                     <div className="alert alert-light border mb-0">
                         Projekt nemá žádné podprojekty.
@@ -26,12 +22,8 @@ export const Subprojects = ({ subprojects = [] }) => {
         <div className="card shadow-sm">
             <div className="card-header fw-bold d-flex justify-content-between align-items-center">
                 <span>PODPROJEKTY</span>
-
-                <span className="badge text-bg-primary">
-                    {subprojects.length}
-                </span>
+                <span className="badge text-bg-primary">{subprojects.length}</span>
             </div>
-
             <div className="card-body">
                 <div className="table-responsive">
                     <table className="table table-hover align-middle mb-0">
@@ -41,34 +33,37 @@ export const Subprojects = ({ subprojects = [] }) => {
                                 <th>EN název</th>
                                 <th>Začátek</th>
                                 <th>Konec</th>
+                                <th>Finance</th>
                                 <th>Stav</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             {subprojects.map((project) => (
                                 <tr key={project.id}>
                                     <td className="fw-semibold">
                                         <Link item={project} />
                                     </td>
-
                                     <td>{project.nameEn ?? "-"}</td>
                                     <td>{formatDate(project.startdate)}</td>
                                     <td>{formatDate(project.enddate)}</td>
-
                                     <td>
-                                        {project.done === true ? (
-                                            <span className="badge text-bg-success">
-                                                Dokončeno
-                                            </span>
-                                        ) : project.done === false ? (
-                                            <span className="badge text-bg-warning">
-                                                Nedokončeno
+                                        {project.finance ? (
+                                            <span className="badge text-bg-primary">
+                                                {project.finance.name}
                                             </span>
                                         ) : (
                                             <span className="badge text-bg-secondary">
-                                                Bez stavu
+                                                Nepřiřazeno
                                             </span>
+                                        )}
+                                    </td>
+                                    <td>
+                                        {project.done === true ? (
+                                            <span className="badge text-bg-success">Dokončeno</span>
+                                        ) : project.done === false ? (
+                                            <span className="badge text-bg-warning">Nedokončeno</span>
+                                        ) : (
+                                            <span className="badge text-bg-secondary">Bez stavu</span>
                                         )}
                                     </td>
                                 </tr>

@@ -1,6 +1,5 @@
 export const formatDate = (value) => {
     if (!value) return "-"
-
     try {
         return new Date(value).toLocaleDateString("cs-CZ")
     } catch {
@@ -10,7 +9,6 @@ export const formatDate = (value) => {
 
 export const parseDate = (value) => {
     if (!value) return null
-
     const date = new Date(value)
     return Number.isNaN(date.getTime()) ? null : date
 }
@@ -22,12 +20,7 @@ export const daysBetween = (start, end) => {
 
 export const formatMoney = (value) => {
     if (value === null || value === undefined || value === "") return "-"
-
     const number = Number(value)
-
-    if (Number.isNaN(number)) {
-        return String(value)
-    }
-
+    if (Number.isNaN(number)) return String(value)
     return number.toLocaleString("cs-CZ")
 }

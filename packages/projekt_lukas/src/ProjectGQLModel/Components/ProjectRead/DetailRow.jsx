@@ -3,7 +3,6 @@ export const DetailRow = ({ label, value }) => (
         <strong style={{ minWidth: "110px" }}>
             {label}
         </strong>
-
         <span className="text-end text-break">
             {value ?? "-"}
         </span>

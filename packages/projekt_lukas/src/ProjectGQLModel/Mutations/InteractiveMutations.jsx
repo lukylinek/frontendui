@@ -16,8 +16,8 @@ export const PageLink = ({ children, preserveHash = true, preserveSearch = true,
         >
             {children}
         </ProxyLink>
-    );
-};
+    )
+}
 
 export const InteractiveMutations = ({ item }) => {
     const [showInlineEdit, setShowInlineEdit] = useState(false)
@@ -43,21 +43,21 @@ export const InteractiveMutations = ({ item }) => {
             <DeleteButton className="btn btn-outline-danger" item={item}>
                 Odstranit
             </DeleteButton>
+
             <CreateButton
-    className="btn btn-outline-primary"
-    item={{
-        name: "Nový projekt",
-        nameEn: "New project",
-        done: false,
-        masterprojectId: item.id,
-        projectTypeId: item.projectTypeId,
-    }}
->
-    Vytvořit podprojekt
-</CreateButton>
+                className="btn btn-outline-primary"
+                item={{
+                    name: "Nový projekt",
+                    nameEn: "New project",
+                    done: false,
+                    masterprojectId: item.id,
+                    projectTypeId: item.projectTypeId,
+                }}
+            >
+                Vytvořit podprojekt
+            </CreateButton>
 
-
-            {showInlineEdit && (
+{showInlineEdit && (
                 <div className="mt-3">
                     <UpdateBody />
                 </div>

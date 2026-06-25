@@ -23,15 +23,11 @@ export const GanttTimeline = ({ item }) => {
 
     if (!validProjects.length) {
         return (
-            <div className="card shadow-sm mb-4">
+            <div className="card shadow-sm">
                 <div className="card-header fw-bold d-flex justify-content-between align-items-center">
                     <span>GANTT DIAGRAM</span>
-
-                    <span className="badge text-bg-secondary">
-                        Bez dat
-                    </span>
+                    <span className="badge text-bg-secondary">Bez dat</span>
                 </div>
-
                 <div className="card-body">
                     <div className="alert alert-light border mb-0">
                         Pro Gantt diagram nejsou dostupná data začátku a konce projektu.
@@ -41,33 +37,22 @@ export const GanttTimeline = ({ item }) => {
         )
     }
 
-    const minDate = new Date(
-        Math.min(...validProjects.map((project) => project.start.getTime()))
-    )
-
-    const maxDate = new Date(
-        Math.max(...validProjects.map((project) => project.end.getTime()))
-    )
-
+    const minDate = new Date(Math.min(...validProjects.map((p) => p.start.getTime())))
+    const maxDate = new Date(Math.max(...validProjects.map((p) => p.end.getTime())))
     const totalDays = daysBetween(minDate, maxDate)
 
     const today = new Date()
     const isTodayVisible = today >= minDate && today <= maxDate
-
     const todayOffset = isTodayVisible
         ? Math.max(0, (daysBetween(minDate, today) - 1) / totalDays) * 100
         : null
 
     return (
-        <div className="card shadow-sm mb-4">
+        <div className="card shadow-sm">
             <div className="card-header fw-bold d-flex justify-content-between align-items-center">
                 <span>GANTT DIAGRAM</span>
-
-                <span className="badge text-bg-primary">
-                    {validProjects.length}
-                </span>
+                <span className="badge text-bg-primary">{validProjects.length}</span>
             </div>
-
             <div className="card-body">
                 <div className="d-flex justify-content-between text-muted small mb-3">
                     <span>{formatDate(minDate)}</span>
@@ -93,7 +78,6 @@ export const GanttTimeline = ({ item }) => {
                     {validProjects.map((project) => {
                         const offset = daysBetween(minDate, project.start) - 1
                         const duration = daysBetween(project.start, project.end)
-
                         const left = Math.max(0, (offset / totalDays) * 100)
                         const width = Math.max(6, (duration / totalDays) * 100)
 
@@ -103,20 +87,14 @@ export const GanttTimeline = ({ item }) => {
                                     <div className={project.isMain ? "fw-bold text-primary" : "fw-semibold"}>
                                         {project.name ?? "-"}
                                     </div>
-
                                     <div className="text-muted small">
                                         {formatDate(project.start)} – {formatDate(project.end)}
                                     </div>
                                 </div>
-
                                 <div className="col-12 col-md-9">
                                     <div
                                         className="position-relative rounded"
-                                        style={{
-                                            height: "34px",
-                                            backgroundColor: "#f1f3f5",
-                                            overflow: "hidden",
-                                        }}
+                                        style={{ height: "34px", backgroundColor: "#f1f3f5", overflow: "hidden" }}
                                     >
                                         {isTodayVisible && (
                                             <div
@@ -130,7 +108,6 @@ export const GanttTimeline = ({ item }) => {
                                                 }}
                                             />
                                         )}
-
                                         <div
                                             className={`position-absolute top-0 h-100 rounded d-flex align-items-center px-2 text-white small fw-semibold ${
                                                 project.isMain ? "bg-primary" : "bg-success"

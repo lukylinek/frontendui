@@ -1,11 +1,11 @@
 import { PageItemBase } from "./PageBase"
-import { ProjectReadContent } from "./ProjectReadContent"
+import { ProjectDetailLayout } from "../Components/ProjectDetailLayout"
 
 export const PageReadItem = ({
-    SubPage = ProjectReadContent,
+    ItemLayout = ProjectDetailLayout,
     ...props
 }) => {
     return (
-        <PageItemBase SubPage={SubPage} {...props} />
+        <PageItemBase ItemLayout={ItemLayout} {...props} />
     )
 }
