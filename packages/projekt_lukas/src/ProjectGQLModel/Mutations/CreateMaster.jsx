@@ -57,34 +57,14 @@ const ProjectTypeSelect = ({ value, onChange }) => {
 
 const GroupSelect = ({ value, onChange }) => {
     const [groups, setGroups] = useState([])
-    const [loadError, setLoadError] = useState(false)
     const gqlClient = useGQLClient()
 
     useEffect(() => {
         if (!gqlClient) return
         gqlClient.query(GROUP_QUERY)
-            .then(result => {
-                const g = result?.data?.groupPage ?? []
-                setGroups(g)
-                if (g.length === 0) setLoadError(true)
-            })
-            .catch(() => setLoadError(true))
+            .then(result => setGroups(result?.data?.groupPage ?? []))
+            .catch(() => {})
     }, [gqlClient])
-
-    if (loadError || groups.length === 0) {
-        return (
-            <Label title="Skupina / Katedra * (UUID)">
-                <Input
-                    id="groupId"
-                    label=""
-                    className="form-control"
-                    placeholder="Zadejte UUID skupiny"
-                    value={value ?? ""}
-                    onChange={onChange}
-                />
-            </Label>
-        )
-    }
 
     return (
         <Label title="Skupina / Katedra *">
@@ -96,9 +76,7 @@ const GroupSelect = ({ value, onChange }) => {
             >
                 <option value="">— vyberte skupinu —</option>
                 {groups.map((g) => (
-                    <option key={g.id} value={g.id}>
-                        {g.name}
-                    </option>
+                    <option key={g.id} value={g.id}>{g.name}</option>
                 ))}
             </select>
         </Label>
@@ -127,11 +105,6 @@ const DefaultContent = ({ item, onChange, onBlur, children }) => (
 
 const defaultitem = { name: "Nový projekt", nameEn: "New project", done: false }
 
-const permissions = {
-    oneOfRoles: ["administrátor", "studijní administrátor"],
-    mode: "absolute",
-}
-
 export const CreateMasterDialog = ({
     title = "Nový hlavní projekt",
     DefaultContent: defaultContent = DefaultContent,
@@ -159,6 +132,7 @@ export const CreateMasterButton = ({
         DefaultContent={DefaultContent}
         mutationAsyncAction={MasterInsertAsyncAction}
         readItemURI={ReadItemURI}
-        {...permissions}
+        oneOfRoles={["administrátor", "studijní administrátor"]}
+        mode="absolute"
     />
 )
