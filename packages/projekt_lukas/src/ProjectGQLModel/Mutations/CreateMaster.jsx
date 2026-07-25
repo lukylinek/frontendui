@@ -86,6 +86,8 @@ const GroupSelect = ({ value, onChange }) => {
 const DefaultContent = ({ item, onChange, onBlur, children }) => (
     <MediumEditableContent item={item} onChange={onChange} onBlur={onBlur}>
         <Input id="description" label="Popis" className="form-control" value={item?.description ?? ""} onChange={onChange} onBlur={onBlur} />
+        <Input id="startdate" label="Začátek" type="date" className="form-control" value={item?.startdate ?? ""} onChange={onChange} onBlur={onBlur} />
+        <Input id="enddate" label="Konec" type="date" className="form-control" value={item?.enddate ?? ""} onChange={onChange} onBlur={onBlur} />
         <Label title="Dokončeno">
             <select
                 id="done"

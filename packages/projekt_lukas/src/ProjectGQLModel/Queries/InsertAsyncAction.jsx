@@ -9,6 +9,8 @@ mutation ProjectInsert(
     $nameEn: String
     $description: String
     $done: Boolean
+    $startdate: DateTime
+    $enddate: DateTime
     $projectTypeId: UUID
     $masterprojectId: UUID!
 ) {
@@ -19,6 +21,8 @@ mutation ProjectInsert(
       nameEn: $nameEn
       description: $description
       done: $done
+      startdate: $startdate
+      enddate: $enddate
       projectTypeId: $projectTypeId
       masterprojectId: $masterprojectId
     }
