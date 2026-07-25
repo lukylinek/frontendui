@@ -1,24 +1,9 @@
 import { useParams } from "react-router"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { SimpleCardCapsule } from "../../../../_template/src/Base/Components/CardCapsule"
 import { ReadAsyncAction } from "../Queries/ReadAsyncAction"
 import { UpdateFinanceButton, UpdateFinanceBody } from "../Mutations/Update"
-import { useState } from "react"
-
-const FinanceDetail = ({ item }) => {
-    if (!item) return null
-    return (
-        <SimpleCardCapsule title={item.name ?? "Finance"}>
-            <div><b>Název:</b> {item.name ?? "-"}</div>
-            <div><b>EN název:</b> {item.nameEn ?? "-"}</div>
-            <div><b>Hodnota:</b> {item.value != null ? `${item.value} Kč` : "-"}</div>
-            <div><b>Popis:</b> {item.description ?? "-"}</div>
-            <div><b>Projekt:</b> {item.project?.name ?? "-"}</div>
-            <div><b>Nadřazená finance:</b> {item.masterfinance?.name ?? "-"}</div>
-        </SimpleCardCapsule>
-    )
-}
+import { FinanceDetail } from "../Components/FinanceDetail"
 
 export const PageReadItem = () => {
     const { id } = useParams()
