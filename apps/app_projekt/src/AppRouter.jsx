@@ -11,6 +11,7 @@ import {
 
 import { AppNavbar } from "./AppNavbar";
 import { ProjectGQLModelRouterSegments } from "../../../packages/projekt_lukas/src/ProjectGQLModel/Pages/RouterSegment";
+import { FinanceGQLModelRouterSegments } from "../../../packages/projekt_lukas/src/FinanceGQLModel/Pages/RouterSegment";
 
 const AppLayout = () => (
     <NavigationHistoryProvider>
@@ -26,6 +27,7 @@ const Routes = [
         element: <AppLayout />,
         children: [
             ...ProjectGQLModelRouterSegments,
+            ...FinanceGQLModelRouterSegments,
         ],
     },
 ];
